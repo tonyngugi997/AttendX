@@ -486,7 +486,7 @@ class FlaskAuthController:
             return {'error': str(e)}, 401
         except Exception as e:
             # Log unexpected errors
-            logging.exception("Unexpected error in login")
+            logging.exception(f"Unexpected error in login: {e}")
             return {'error': 'Internal server error'}, 500
     
     def register(self) -> Tuple[Dict[str, Any], int]:
@@ -518,7 +518,6 @@ class FlaskAuthController:
             return {'error': 'Internal server error'}, 500
 
 
-# ===================== Application Factory =====================
 
 class Application:
     """Application factory and composition root"""
@@ -628,7 +627,6 @@ class Application:
         return self.app
 
 
-# ===================== Configuration =====================
 
 class Config:
     """Configuration management"""
@@ -649,7 +647,6 @@ class Config:
         return Config.get_default()
 
 
-# ===================== Entry Point =====================
 
 # Create application instance
 config = Config.from_env()
@@ -657,4 +654,8 @@ application = Application(config)
 app = application.get_app()
 
 if __name__ == '__main__':
-    app.run(debug=config['DEBUG'])
+    try:
+        app.run(debug=config['DEBUG'])
+    except Exception as e:
+        logging.exception(f"Failed to start application: {e}")
+            
