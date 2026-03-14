@@ -1,3 +1,5 @@
+#!/user/bin/python3
+#imports
 import logging
 import os
 import sqlite3
@@ -191,7 +193,7 @@ class SQLiteUserRepository(UserRepository):
         return conn
     
     def _row_to_user(self, row: sqlite3.Row) -> User:
-        """Convert database row to User entity"""
+        """Convert database row to User entity for proper handling"""
         return User(
             id=row['id'],
             username=row['username'],
@@ -654,8 +656,4 @@ application = Application(config)
 app = application.get_app()
 
 if __name__ == '__main__':
-    try:
-        app.run(debug=config['DEBUG'])
-    except Exception as e:
-        logging.exception(f"Failed to start application: {e}")
-            
+    app.run(debug=config['DEBUG'])
