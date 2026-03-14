@@ -656,4 +656,8 @@ application = Application(config)
 app = application.get_app()
 
 if __name__ == '__main__':
-    app.run(debug=config['DEBUG'])
+    try:
+        app.run(debug=config['DEBUG'])
+    except Exception as e:
+        logging.exception("Failed to start application")
+    
